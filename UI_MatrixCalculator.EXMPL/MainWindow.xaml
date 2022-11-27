@@ -3,29 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:UI_MatrixCalculator.EXMPL"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="470" Width="800">
     <Grid>
-        <Button Click="CreateMatrix" Height="25" Width="100" Margin="0,0,500,300"> Задать матрицу </Button>
-        <Label x:Name="FirstMatrixView" FontSize="10" Margin="100,95,0,0">  </Label>
-        <Label x:Name="SecondMatrixView" FontSize="10" Margin="250,130,0,0">  </Label>
-        <ComboBox x:Name="Type" Height="30" Width="40" Margin="0,0,350,300">
-            <ComboBoxItem> + </ComboBoxItem>
-            <ComboBoxItem> - </ComboBoxItem>
-            <ComboBoxItem> / </ComboBoxItem>
-            <ComboBoxItem> * </ComboBoxItem>
-        </ComboBox>
-        <ComboBox SelectionChanged="ChoseSecondElement" x:Name="SecondType" Height="25" Width="100" Margin="0,0,195,300">
-            <ComboBoxItem> матрица </ComboBoxItem>
-            <ComboBoxItem> число </ComboBoxItem>
-        </ComboBox>
-        
-        <Button Click="CreateSecondMatrix" x:Name="SetSecondMatrix" Height="25" Width="100" Margin="0,0,195,230"> Задать матрицу </Button>
-        <TextBox x:Name="SetNumber" Height="25" Width="100" Margin="0,0,195,230"> Задать число </TextBox>
-        
-        <Label FontSize="20" Margin="360,55,0,0"> = </Label>
-        <Label x:Name="Answer" FontSize="20" Margin="380,55,0,0">  </Label>
-        <Button Height="20" Width="20" Click="GetAnswer"></Button>
+        <Grid>
+            <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Visible">
+                <Grid x:Name="ParentGrid" HorizontalAlignment="Left">
+            
+                    <Button Click="ExtendEquation"  Height="30" Width="30" Margin="40,45,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"> + </Button>
+                    <Button Click="DeletePart" Height="30" Width="30" Margin="40,80,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"> - </Button>
+            
+                    <Label HorizontalAlignment="Left" x:Name="Answer" FontSize="20" Margin="380,55,0,0"> </Label>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+        <Button Click="ResolveEquation" Height="20" Width="100" Margin="650,400,0,0">
+            Решить
+        </Button>
     </Grid>
 </Window>

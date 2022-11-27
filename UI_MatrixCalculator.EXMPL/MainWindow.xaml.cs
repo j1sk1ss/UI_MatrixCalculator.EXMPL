@@ -1,5 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
+using UI_MatrixCalculator.EXMPL.GUInterface;
 using UI_MatrixCalculator.EXMPL.Windows;
 using Matrix = UI_MatrixCalculator.EXMPL.Objects.Matrix;
 
@@ -9,65 +12,104 @@ namespace UI_MatrixCalculator.EXMPL
     {
         public MainWindow()
         {
+            Matrix = new List<Matrix>();
+            _number = new List<int>();
             InitializeComponent();
         }
 
-        public Matrix mainMatrix;
-        private Matrix secondMatrix;
-        private int number;
-        private void CreateMatrix(object sender, RoutedEventArgs e) {
-            new Constructor(this).Show();
+        public readonly List<Matrix> Matrix;
+        private List<int> _number;
+        public void CreateMatrix(object sender, RoutedEventArgs e) {
+            new Constructor(this, int.Parse((sender as Button)!.Name.Split("_")[2])).Show();
         }
-        private void CreateSecondMatrix(object sender, RoutedEventArgs e)
-        {
-            secondMatrix = mainMatrix;
-            FirstMatrixView.Content = mainMatrix.Print();
-            new Constructor(this).Show();
-        }
-        private void ChoseSecondElement(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
-        {
-            switch ((sender as ComboBox)!.Text)
-            {
-                case "матрица":
-                    SetSecondMatrix.Visibility = Visibility.Hidden;
-                    SetNumber.Visibility = Visibility.Visible;
-                    break;
-                case "число":
-                    SetSecondMatrix.Visibility = Visibility.Visible;
-                    SetNumber.Visibility = Visibility.Hidden;
-                    break;
+        public void ChosenType(object sender, SelectionChangedEventArgs selectionChangedEventArgs) {
+            try {
+                var comboBox = sender as ComboBox; // i
+                var button = new Button();
+                var text = new TextBox();
+                foreach (var elem in (ParentGrid.Children[^1] as Grid)!.Children) {
+                    var temp = new Button();
+                    var secondTemp = new TextBox();
+                    
+                    if (elem.GetType() == typeof(Button)) {
+                        temp = elem as Button;
+                    } 
+                    else if (elem.GetType() == typeof(TextBox)) {
+                        secondTemp = elem as TextBox;
+                    }
+                
+                    if ((temp ?? new Button()).Name == $"button_1_{comboBox!.Name.Split("_")[1]}") {
+                        button = temp;
+                    }
+                    if ((secondTemp ?? new TextBox()).Name == $"numSetter_{comboBox!.Name.Split("_")[1]}") {
+                        text = secondTemp;
+                    }
+                }
+
+                switch (comboBox!.Text) {
+                    case "матрица":
+                        button!.Visibility = Visibility.Hidden;
+                        text!.Visibility = Visibility.Visible;
+                        break;
+                    case "число":
+                        button!.Visibility = Visibility.Visible;
+                        text!.Visibility = Visibility.Hidden;
+                        break;
+                }
+            }
+            catch (Exception e) {
+                MessageBox.Show($"{e}");
+                throw;
             }
         }
 
-        private void GetAnswer(object sender, RoutedEventArgs e)
+        private int _size;
+        public void ExtendEquation(object sender, RoutedEventArgs e) {
+
+            ParentGrid.Children.Add(GetEquation.GetEquationPart(++_size, this));
+            
+        }
+           
+        public void DeletePart(object sender, RoutedEventArgs e) =>
+            ParentGrid.Children.Add(GetEquation.GetEquationPart(--_size, this));
+
+        private void ResolveEquation(object sender, RoutedEventArgs e)
         {
-            switch (SecondType.Text) 
+            //_number = ReturnEquation.NumsFromGrid(ParentGrid.Children[^1] as Grid);
+            var matrix = Matrix[0];
+            //var number = _number[0];
+            var count = 0;
+            var secCount = 0;
+            try
             {
-                case "матрица":
-                    MatrixAnswer();
-                    break;
-                case "число":
-                    NumAnswer();
-                    break;
+                foreach (var element in (ParentGrid.Children[^1] as Grid)!.Children)
+                {
+                    if (element.GetType() == typeof(ComboBox))
+                    {
+                        switch ((element as ComboBox)!.Text)
+                        {
+                            case "+":
+                                //if (element.GetType() == typeof(Button)) {
+                                    matrix += Matrix[++count];
+                                //}
+                                if (element.GetType() == typeof(TextBox))
+                                {
+                                
+                                }
+                                break;
+                        
+                        }
+                    }
+                }
             }
-        }
+            catch (Exception exception)
+            {
+                MessageBox.Show($"{exception}");
+                throw;
+            }
+            
 
-        private void MatrixAnswer() {
-            Answer.Content = Type.Text switch {
-                "*" => $"{(secondMatrix * mainMatrix).Print()}",
-                "+" => $"{(secondMatrix + mainMatrix).Print()}",
-                "-" => $"{(secondMatrix - mainMatrix).Print()}",
-                _ => Answer.Content
-            };
-        }
-
-        private void NumAnswer()
-        {
-            Answer.Content = Type.Text switch {
-                "*" => $"{secondMatrix.Multiple(double.Parse(SetNumber.Text)).Print()}",
-                "/" => $"{secondMatrix.Divide(double.Parse(SetNumber.Text)).Print()}",
-                _ => Answer.Content
-            };
+            Answer.Content = $"{matrix.Print()}";
         }
     }
 }
