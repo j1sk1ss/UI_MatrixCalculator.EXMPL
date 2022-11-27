@@ -11,12 +11,11 @@ namespace UI_MatrixCalculator.EXMPL.GUInterface
         {
             var lstNums = new List<int>();
             foreach (var element in grid.Children) {
-                if (element.GetType() == typeof(TextBox))
-                {
+                if (element.GetType() == typeof(TextBox)) {
                     var temp = element as TextBox;
-                    if (temp!.Visibility == Visibility.Visible)
-                    {
-                        lstNums.Add(int.Parse(temp.Text));
+                    if (temp!.Visibility == Visibility.Visible) {
+                        var a = 0;
+                        if (int.TryParse(temp.Text,out a)) lstNums.Add(a);
                     }
                 }
             }
