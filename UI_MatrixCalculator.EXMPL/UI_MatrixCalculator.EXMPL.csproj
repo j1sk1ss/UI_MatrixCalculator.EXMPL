@@ -6,4 +6,20 @@
         <UseWPF>true</UseWPF>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Compile Remove="Fucntions\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Fucntions\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Fucntions\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Remove="Fucntions\**" />
+    </ItemGroup>
+
 </Project>

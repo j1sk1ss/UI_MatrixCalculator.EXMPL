@@ -1,28 +1,73 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using UI_MatrixCalculator.EXMPL.Windows;
+using Matrix = UI_MatrixCalculator.EXMPL.Objects.Matrix;
 
 namespace UI_MatrixCalculator.EXMPL
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        public Matrix mainMatrix;
+        private Matrix secondMatrix;
+        private int number;
+        private void CreateMatrix(object sender, RoutedEventArgs e) {
+            new Constructor(this).Show();
+        }
+        private void CreateSecondMatrix(object sender, RoutedEventArgs e)
+        {
+            secondMatrix = mainMatrix;
+            FirstMatrixView.Content = mainMatrix.Print();
+            new Constructor(this).Show();
+        }
+        private void ChoseSecondElement(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
+        {
+            switch ((sender as ComboBox)!.Text)
+            {
+                case "матрица":
+                    SetSecondMatrix.Visibility = Visibility.Hidden;
+                    SetNumber.Visibility = Visibility.Visible;
+                    break;
+                case "число":
+                    SetSecondMatrix.Visibility = Visibility.Visible;
+                    SetNumber.Visibility = Visibility.Hidden;
+                    break;
+            }
+        }
+
+        private void GetAnswer(object sender, RoutedEventArgs e)
+        {
+            switch (SecondType.Text) 
+            {
+                case "матрица":
+                    MatrixAnswer();
+                    break;
+                case "число":
+                    NumAnswer();
+                    break;
+            }
+        }
+
+        private void MatrixAnswer() {
+            Answer.Content = Type.Text switch {
+                "*" => $"{(secondMatrix * mainMatrix).Print()}",
+                "+" => $"{(secondMatrix + mainMatrix).Print()}",
+                "-" => $"{(secondMatrix - mainMatrix).Print()}",
+                _ => Answer.Content
+            };
+        }
+
+        private void NumAnswer()
+        {
+            Answer.Content = Type.Text switch {
+                "*" => $"{secondMatrix.Multiple(double.Parse(SetNumber.Text)).Print()}",
+                "/" => $"{secondMatrix.Divide(double.Parse(SetNumber.Text)).Print()}",
+                _ => Answer.Content
+            };
         }
     }
 }
