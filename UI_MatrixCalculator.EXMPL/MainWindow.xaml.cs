@@ -56,8 +56,11 @@ namespace UI_MatrixCalculator.EXMPL {
         private int _size;
         public void ExtendEquation(object sender, RoutedEventArgs e) {
             ParentGrid.Children.Clear();
-            
             ParentGrid.Children.Add(GetEquation.GetEquationPart(++_size, this));
+            
+            for (var i = 0; i < _size; i++) {
+                Matrix.Add(new Matrix(new double[1,1]));
+            }
         }
         public void DeletePart(object sender, RoutedEventArgs e) {
             ParentGrid.Children.Clear();

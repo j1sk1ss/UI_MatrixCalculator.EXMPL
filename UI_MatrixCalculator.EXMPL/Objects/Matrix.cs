@@ -65,9 +65,12 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
         }
         
         public static Matrix operator +(Matrix firstMatrix, Matrix secondMatrix) {
-            if (firstMatrix.GetRow(0).Size() != secondMatrix.GetRow(0).Size()) return null;
-            if (firstMatrix.GetColumn(0).Size() != secondMatrix.GetColumn(0).Size()) return null;
-
+            if (firstMatrix.GetRow(0).Size() != secondMatrix.GetRow(0).Size()
+                || firstMatrix.GetColumn(0).Size() != secondMatrix.GetColumn(0).Size()) {
+                MessageBox.Show("Матрицы не могут быть сложены. Их размерности не совпадают!");
+                return new Matrix(new double[1,1]);
+            }
+            
             var endMatrix = new Matrix(firstMatrix.Body);
             for (var i = 0; i < firstMatrix.GetRow(0).Size(); i++) {
                 for (var j = 0; j < firstMatrix.GetColumn(0).Size(); j++) {
@@ -90,8 +93,11 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
         }
         
         public static Matrix operator -(Matrix firstMatrix, Matrix secondMatrix) {
-            if (firstMatrix.GetRow(0).Size() != secondMatrix.GetRow(0).Size()) return null;
-            if (firstMatrix.GetColumn(0).Size() != secondMatrix.GetColumn(0).Size()) return null;
+            if (firstMatrix.GetRow(0).Size() != secondMatrix.GetRow(0).Size()
+                || firstMatrix.GetColumn(0).Size() != secondMatrix.GetColumn(0).Size()) {
+                MessageBox.Show("Матрицы не могут быть сложены. Их размерности не совпадают!");
+                return new Matrix(new double[1,1]);
+            }
 
             var endMatrix = new Matrix(firstMatrix.Body);
             for (var i = 0; i < firstMatrix.GetRow(0).Size(); i++) {
@@ -115,7 +121,10 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
         }
         
         public static Matrix operator *(Matrix firstMatrix, Matrix secondMatrix) {
-            if (firstMatrix.GetRow(0).Size() != secondMatrix.GetColumn(0).Size()) return null;
+            if (firstMatrix.GetRow(0).Size() != secondMatrix.GetColumn(0).Size()) {
+                MessageBox.Show("Матрицы не могут быть перемножены. Их размерности не не подходят условию!");
+                return new Matrix(new double[1,1]);
+            }
 
             var xSize = firstMatrix.GetColumn(0).Size();
             var ySize = secondMatrix.GetRow(0).Size();

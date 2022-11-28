@@ -15,7 +15,7 @@
                     
                 </Grid>
             </ScrollViewer>
-            <Label Margin="500,0,0,0" Height="30"> Инормация: </Label>
+            <Label Margin="500,0,0,0" Height="30"> Информация: </Label>
             <Label x:Name="Answer" FontSize="20" Height="200" Margin="0,200,0,0"> </Label>
             <Label Margin="500,50,0,0" Height="30"> 
                 <Hyperlink  RequestNavigate="SendToBrowser" NavigateUri="https://www.math10.com/ru/vysshaya-matematika/matrix/umnozhenie-matric.html">
