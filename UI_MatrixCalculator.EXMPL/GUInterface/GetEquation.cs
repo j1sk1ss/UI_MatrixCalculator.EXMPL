@@ -33,6 +33,7 @@ namespace UI_MatrixCalculator.EXMPL.GUInterface {
                 tempGrid.Children.Add(tempCombobox);
                 
                 var button = new Button() {
+                    Visibility          = Visibility.Hidden,
                     HorizontalAlignment = HorizontalAlignment.Left,
                     Margin  = new Thickness(secondIndent + mainIndent * i, 0, 0, 230),
                     Name    = $"button_1_{i}",
@@ -44,6 +45,7 @@ namespace UI_MatrixCalculator.EXMPL.GUInterface {
                 tempGrid.Children.Add(button);
 
                 tempGrid.Children.Add(new TextBox() {
+                    Visibility          = Visibility.Hidden,
                     HorizontalAlignment = HorizontalAlignment.Left,
                     Name   = $"numSetter_{i}",
                     Margin = new Thickness(secondIndent + mainIndent * i, 0, 0, 230),
