@@ -44,11 +44,11 @@ namespace UI_MatrixCalculator.EXMPL {
             switch (comboBox!.Text) {
                 case "матрица":
                     button!.Visibility = Visibility.Hidden;
-                    text!.Visibility = Visibility.Visible;
+                    text!.Visibility   = Visibility.Visible;
                     break;
                 case "число":
                     button!.Visibility = Visibility.Visible;
-                    text!.Visibility = Visibility.Hidden;
+                    text!.Visibility   = Visibility.Hidden;
                     break;
             }
         }
@@ -129,10 +129,6 @@ namespace UI_MatrixCalculator.EXMPL {
                 MessageBox.Show($"{exception}");
             }
         }
-
-        private void CopyToClipBoard(object sender, RoutedEventArgs e)
-        {
-            Clipboard.SetText(Answer.Content + "\n");
-        }
+        private void CopyToClipBoard(object sender, RoutedEventArgs e) => Clipboard.SetText(Answer.Content + "\n");
     }
 }
