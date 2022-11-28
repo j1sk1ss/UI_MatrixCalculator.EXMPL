@@ -7,67 +7,68 @@ namespace UI_MatrixCalculator.EXMPL.GUInterface {
             mainWindow.ParentGrid.Children.Clear();
             var tempGrid = new Grid();
             
-            const int mainIndent = 155;
+            const int mainIndent   = 155;
             const int secondIndent = 60;
             
             for (var i = 0; i < size; i++) {
                 tempGrid.Children.Add(new ComboBox() {
                     HorizontalAlignment = HorizontalAlignment.Left,
-                    Name = $"typeOperation_{i}",
-                    Text = "+",
+                    Name   = $"typeOperation_{i}",
+                    Text   = "+",
                     Height = 30,
-                    Width = 40,
+                    Width  = 40,
                     Margin = new Thickness(10 + mainIndent * i, 0, 0, 300),
-                    Items = { "+", "-", "/", "*" }
+                    Items  = { "+", "-", "/", "*" }
                 });
                 
                 var tempCombobox = new ComboBox() {
                     HorizontalAlignment = HorizontalAlignment.Left,
-                    Name = $"combo_{i}",
+                    Name   = $"combo_{i}",
                     Height = 25,
-                    Width = 100,
+                    Width  = 100,
                     Margin = new Thickness(secondIndent + mainIndent * i, 0, 0, 300),
-                    Items = { "матрица", "число" }
+                    Items  = { "матрица", "число" }
                 };
                 tempCombobox.SelectionChanged += mainWindow.ChosenType;
                 tempGrid.Children.Add(tempCombobox);
                 
                 var button = new Button() {
                     HorizontalAlignment = HorizontalAlignment.Left,
-                    Margin = new Thickness(secondIndent + mainIndent * i, 0, 0, 230),
-                    Name = $"button_1_{i}",
+                    Margin  = new Thickness(secondIndent + mainIndent * i, 0, 0, 230),
+                    Name    = $"button_1_{i}",
                     Content = "Задать матрицу",
-                    Height = 25,
-                    Width = 100
+                    Height  = 25,
+                    Width   = 100
                 };
                 button.Click += mainWindow.CreateMatrix;
                 tempGrid.Children.Add(button);
 
                 tempGrid.Children.Add(new TextBox() {
                     HorizontalAlignment = HorizontalAlignment.Left,
-                    Name = $"numSetter_{i}",
+                    Name   = $"numSetter_{i}",
                     Margin = new Thickness(secondIndent + mainIndent * i, 0, 0, 230),
                     Height = 25,
-                    Width = 100
+                    Width  = 100
                 });
                 
                 tempGrid.Children.Add(new Label() {
-                    FontSize = 15,
-                    Name = $"Label_{i}",
+
                     HorizontalAlignment = HorizontalAlignment.Left,
-                    Margin = new Thickness(secondIndent + mainIndent * i, 120, 0, 230),
-                    Height = 100,
-                    Width = 100
+                    FontSize = 15,
+                    Name     = $"Label_{i}",
+                    Margin   = new Thickness(secondIndent + mainIndent * i, 120, 0, 230),
+                    Height   = 100,
+                    Width    = 100
                 });
             }
             
             var extendButton = new Button() {
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top,
-                Margin = new Thickness(secondIndent + mainIndent * size, 45, 0, 0),
+                Margin  = new Thickness(secondIndent + mainIndent * size, 45, 0, 0),
                 Content = "+",
-                Height = 30,
-                Width = 30
+                Height  = 30,
+                Width   = 30
             };
             extendButton.Click += mainWindow.ExtendEquation;
             tempGrid.Children.Add(extendButton);
@@ -75,10 +76,10 @@ namespace UI_MatrixCalculator.EXMPL.GUInterface {
             var decreaseButton = new Button() {
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top,
-                Margin = new Thickness(secondIndent + mainIndent * size, 80, 0, 0),
+                Margin  = new Thickness(secondIndent + mainIndent * size, 80, 0, 0),
                 Content = "-",
-                Height = 30,
-                Width = 30
+                Height  = 30,
+                Width   = 30
             };
             decreaseButton.Click += mainWindow.DeletePart;
             tempGrid.Children.Add(decreaseButton);

@@ -8,37 +8,38 @@ namespace UI_MatrixCalculator.EXMPL.Windows {
         public Constructor(MainWindow mainWindow, int position) {
             InitializeComponent();
             UpdateInterface();
+            
             MainWindow = mainWindow;
-            this.position = position;
+             _position = position;
         }
         private MainWindow MainWindow { get; set; }
-        private int xSize = 2;
-        private int ySize = 2;
-        private int position;
+        private int _xSize = 2;
+        private int _ySize = 2;
+        private readonly int _position;
         private void IncreaseXSize(object sender, RoutedEventArgs routedEventArgs) {
-            xSize++;
+            _xSize++;
             UpdateInterface();
         }
         private void IncreaseYSize(object sender, RoutedEventArgs routedEventArgs) {
-            ySize++;
+            _ySize++;
             UpdateInterface();
         }
         private void DecreaseXSize(object sender, RoutedEventArgs routedEventArgs) {
-            if (xSize > 2) xSize--;
+            if (_xSize > 2) _xSize--;
             UpdateInterface();
         }
         private void DecreaseYSize(object sender, RoutedEventArgs routedEventArgs) {
-            if (ySize > 2) ySize--;
+            if (_ySize > 2) _ySize--;
             UpdateInterface();
         }
         private void UpdateInterface() {
             MatrixParent.Children.Clear();
             var button = new Button() {
                 Height = 20,
-                Width = 20,
+                Width  = 20,
                 HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top,
-                Margin = new Thickness(ySize * 25,0,0,0),
+                VerticalAlignment   = VerticalAlignment.Top,
+                Margin  = new Thickness(_ySize * 25,0,0,0),
                 Content = "+"
             };
             button.Click += IncreaseYSize;
@@ -46,10 +47,10 @@ namespace UI_MatrixCalculator.EXMPL.Windows {
             
             button = new Button() {
                 Height = 20,
-                Width = 20,
+                Width  = 20,
                 HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top,
-                Margin = new Thickness(ySize * 25,20,0,0),
+                VerticalAlignment   = VerticalAlignment.Top,
+                Margin  = new Thickness(_ySize * 25,20,0,0),
                 Content = "-"
             };
             button.Click += DecreaseYSize;
@@ -57,10 +58,10 @@ namespace UI_MatrixCalculator.EXMPL.Windows {
             
             button = new Button() {
                 Height = 20,
-                Width = 20,
+                Width  = 20,
                 HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top,
-                Margin = new Thickness(0,xSize * 25,0,0),
+                VerticalAlignment   = VerticalAlignment.Top,
+                Margin  = new Thickness(0,_xSize * 25,0,0),
                 Content = "+"
             };
             button.Click += IncreaseXSize;
@@ -68,33 +69,32 @@ namespace UI_MatrixCalculator.EXMPL.Windows {
             
             button = new Button() {
                 Height = 20,
-                Width = 20,
+                Width  = 20,
                 HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top,
-                Margin = new Thickness(20,xSize * 25,0,0),
+                VerticalAlignment   = VerticalAlignment.Top,
+                Margin  = new Thickness(20,_xSize * 25,0,0),
                 Content = "-"
             };
             button.Click += DecreaseXSize;
             MatrixParent.Children.Add(button);
             
-            for (var i = 0; i < xSize; i++) {
-                for (var j = 0; j < ySize; j++) {
+            for (var i = 0; i < _xSize; i++) {
+                for (var j = 0; j < _ySize; j++) {
                     MatrixParent.Children.Add(new TextBox() {
                         Height = 20,
-                        Width = 20,
+                        Width  = 20,
                         HorizontalAlignment = HorizontalAlignment.Left,
-                        VerticalAlignment = VerticalAlignment.Top,
+                        VerticalAlignment   = VerticalAlignment.Top,
                         Margin = new Thickness(j * 25,i * 25,0,0)
                     });
                 }
             }
         }
-
         private void SaveMatrix(object sender, EventArgs e) {
-            var temp = new double[xSize, ySize];
-            var count = -1;
-            for (var i = xSize - 1; i >= 0; i--) {
-                for (var j = ySize - 1; j >= 0; j--) {
+            var temp     = new double[_xSize, _ySize];
+            var count    = new int();
+            for (var i = _xSize - 1; i >= 0; i--) {
+                for (var j = _ySize - 1; j >= 0; j--) {
                     count++;
                     temp[i, j] = double.Parse((MatrixParent.Children[^(count + 1)] as TextBox)!.Text);
                 }
@@ -104,10 +104,11 @@ namespace UI_MatrixCalculator.EXMPL.Windows {
             foreach (var element in (MainWindow.ParentGrid.Children[^1] as Grid)!.Children) {
                 if (element.GetType() != typeof(Label)) continue;
                 var label = element as Label;
-                if (label!.Name == $"Label_{position}") {
+                if (label!.Name == $"Label_{_position}") {
                     label!.Content = matrix.Print();
                 }
             }
+            
             MainWindow.Matrix.Add(matrix);
         }
     }

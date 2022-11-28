@@ -6,19 +6,20 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
         public Matrix(double[,] body) { // Конструктор принимаем двумерную матрицу даблов и заносит их в тело
             Body = body;
         }
-        public double[,] Body { get; set; } // Тело
+
+        private double[,] Body { get; set; } // Тело
         
         public double GetElement(int x, int y) => Body[x, y]; // Метод получения элемента по координатам
         
         public int GetSize(int dimension) => Body.GetLength(dimension); // Метод получения длины одного из измерений
-        
-        public Vector<double> GetRow(int column) { // Метод получения строки вектором
+
+        private Vector<double> GetRow(int column) { // Метод получения строки вектором
             var temp = new double[Body.GetLength(1)]; // Создаётся вектор длиной равной длине строки матрицы 
             for (var i = 0; i < temp.Length; i++) temp[i] = Body[column, i]; // Туда копируются значения
             return new Vector<double>(temp); // Возвращаем вектор
         }
-        
-        public Vector<double> GetColumn(int row) { // Метод получения столбца вектором
+
+        private Vector<double> GetColumn(int row) { // Метод получения столбца вектором
             var temp = new double[Body.GetLength(0)]; // Создаётся вектор длиной равной длине строки столбца 
             for (var i = 0; i < temp.Length; i++) temp[i] = Body[i, row]; // Туда копируются значения
             return new Vector<double>(temp);  // Возвращаем вектор
@@ -57,10 +58,8 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
 
         public Matrix Pow() {
             var endMatrix = new Matrix(Body);
-            for (var i = 0; i < GetRow(0).Size(); i++)
-            {
-                for (var j = 0; j < GetColumn(0).Size(); j++)
-                {
+            for (var i = 0; i < GetRow(0).Size(); i++) {
+                for (var j = 0; j < GetColumn(0).Size(); j++) {
                     endMatrix.Body[i, j] = Body[i, j] * Body[i, j];
                 }
             }
@@ -73,10 +72,8 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
             if (firstMatrix.GetColumn(0).Size() != secondMatrix.GetColumn(0).Size()) return null;
 
             var endMatrix = new Matrix(firstMatrix.Body);
-            for (var i = 0; i < firstMatrix.GetRow(0).Size(); i++)
-            {
-                for (var j = 0; j < firstMatrix.GetColumn(0).Size(); j++)
-                {
+            for (var i = 0; i < firstMatrix.GetRow(0).Size(); i++) {
+                for (var j = 0; j < firstMatrix.GetColumn(0).Size(); j++) {
                     endMatrix.Body[i, j] = firstMatrix.Body[i, j] + secondMatrix.Body[i, j];
                 }
             }
@@ -86,10 +83,8 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
         
         public static Matrix operator +(Matrix firstMatrix, int number) {
             var endMatrix = new Matrix(firstMatrix.Body);
-            for (var i = 0; i < firstMatrix.GetRow(0).Size(); i++)
-            {
-                for (var j = 0; j < firstMatrix.GetColumn(0).Size(); j++)
-                {
+            for (var i = 0; i < firstMatrix.GetRow(0).Size(); i++) {
+                for (var j = 0; j < firstMatrix.GetColumn(0).Size(); j++) {
                     endMatrix.Body[i, j] = firstMatrix.Body[i, j] + number;
                 }
             }
@@ -102,10 +97,8 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
             if (firstMatrix.GetColumn(0).Size() != secondMatrix.GetColumn(0).Size()) return null;
 
             var endMatrix = new Matrix(firstMatrix.Body);
-            for (var i = 0; i < firstMatrix.GetRow(0).Size(); i++)
-            {
-                for (var j = 0; j < firstMatrix.GetColumn(0).Size(); j++)
-                {
+            for (var i = 0; i < firstMatrix.GetRow(0).Size(); i++) {
+                for (var j = 0; j < firstMatrix.GetColumn(0).Size(); j++) {
                     endMatrix.Body[i, j] = firstMatrix.Body[i, j] - secondMatrix.Body[i, j];
                 }
             }
@@ -115,10 +108,8 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
         
         public static Matrix operator -(Matrix firstMatrix, int number) {
             var endMatrix = new Matrix(firstMatrix.Body);
-            for (var i = 0; i < firstMatrix.GetRow(0).Size(); i++)
-            {
-                for (var j = 0; j < firstMatrix.GetColumn(0).Size(); j++)
-                {
+            for (var i = 0; i < firstMatrix.GetRow(0).Size(); i++) {
+                for (var j = 0; j < firstMatrix.GetColumn(0).Size(); j++) {
                     endMatrix.Body[i, j] = firstMatrix.Body[i, j] - number;
                 }
             }
