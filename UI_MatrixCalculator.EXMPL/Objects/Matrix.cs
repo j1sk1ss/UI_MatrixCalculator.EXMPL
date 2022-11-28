@@ -56,14 +56,11 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
             return temp;
         }
 
-        public Matrix Pow() {
+        public Matrix Pow(int degree) {
             var endMatrix = new Matrix(Body);
-            for (var i = 0; i < GetRow(0).Size(); i++) {
-                for (var j = 0; j < GetColumn(0).Size(); j++) {
-                    endMatrix.Body[i, j] = Body[i, j] * Body[i, j];
-                }
+            for (var count = 0; count < degree - 1; count++) {
+                endMatrix *= this;
             }
-            
             return endMatrix;
         }
         
@@ -81,7 +78,7 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
             return endMatrix;
         }
         
-        public static Matrix operator +(Matrix firstMatrix, int number) {
+        public static Matrix operator +(Matrix firstMatrix, double number) {
             var endMatrix = new Matrix(firstMatrix.Body);
             for (var i = 0; i < firstMatrix.GetRow(0).Size(); i++) {
                 for (var j = 0; j < firstMatrix.GetColumn(0).Size(); j++) {
@@ -106,7 +103,7 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
             return endMatrix;
         }
         
-        public static Matrix operator -(Matrix firstMatrix, int number) {
+        public static Matrix operator -(Matrix firstMatrix, double number) {
             var endMatrix = new Matrix(firstMatrix.Body);
             for (var i = 0; i < firstMatrix.GetRow(0).Size(); i++) {
                 for (var j = 0; j < firstMatrix.GetColumn(0).Size(); j++) {
@@ -137,7 +134,7 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
             return endMatrix;
         }
         
-        public static Matrix operator *(Matrix firstMatrix, int number) {
+        public static Matrix operator *(Matrix firstMatrix, double number) {
             var endMatrix = new Matrix(new double[firstMatrix.Body.GetLength(0),
                 firstMatrix.Body.GetLength(1)]);
             
@@ -153,7 +150,7 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
             return endMatrix;
         }
         
-        public static Matrix operator /(Matrix firstMatrix, int number) {
+        public static Matrix operator /(Matrix firstMatrix, double number) {
             var endMatrix = new Matrix(new double[firstMatrix.Body.GetLength(0),
                 firstMatrix.Body.GetLength(1)]);
             

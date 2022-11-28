@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 using UI_MatrixCalculator.EXMPL.GUInterface;
 using UI_MatrixCalculator.EXMPL.Windows;
 using Matrix = UI_MatrixCalculator.EXMPL.Objects.Matrix;
@@ -73,34 +75,61 @@ namespace UI_MatrixCalculator.EXMPL {
 
                 var numPos    = 0;
                 var matrixPos = 0;
+
+                const int countOfElements = 7;
                 
-                for (var i = 5; i < tempGrid!.Children.Count; i += 5) {
-                    if (tempGrid!.Children.Count - i < 5) break;
+                for (var i = countOfElements; i < tempGrid!.Children.Count; i += countOfElements) {
+                    if (tempGrid!.Children.Count - i < countOfElements) break;
                     if (tempGrid!.Children[i + 2].GetType() != typeof(Button)) continue;
-                    
+
                     if ((tempGrid!.Children[i + 2] as Button)!.Visibility == Visibility.Visible) {
+                        var nextMatrix = Matrix[++matrixPos];
+                        if ((tempGrid!.Children[i + 4] as CheckBox)!.IsChecked == true) {
+                            nextMatrix = nextMatrix.Pow(int.Parse((tempGrid!.Children[i + 5] as TextBox)!.Text));
+                        }
+                        
                         matrix = (tempGrid!.Children[i] as ComboBox)!.Text switch {
-                            "+" => matrix + Matrix[++matrixPos],
-                            "-" => matrix - Matrix[++matrixPos],
-                            "*" => matrix * Matrix[++matrixPos],
-                            _   => matrix + Matrix[++matrixPos]
+                            "+" => matrix + nextMatrix,
+                            "-" => matrix - nextMatrix,
+                            "*" => matrix * nextMatrix,
+                            _   => matrix + nextMatrix
                         };
                     }
                     else {
+                        double nextNumber = _number[numPos++];
+                        if ((tempGrid!.Children[i + 4] as CheckBox)!.IsChecked == true) {
+                            nextNumber = Math.Pow(nextNumber, int.Parse((tempGrid!.Children[i + 5] as TextBox)!.Text));
+                        }
+                        
                         matrix = (tempGrid!.Children[i] as ComboBox)!.Text switch {
-                            "+" => matrix + _number[numPos++],
-                            "-" => matrix - _number[numPos++],
-                            "*" => matrix * _number[numPos++],
-                            "/" => matrix / _number[numPos++],
-                            _   => matrix + _number[numPos++]
+                            "+" => matrix + nextNumber,
+                            "-" => matrix - nextNumber,
+                            "*" => matrix * nextNumber,
+                            "/" => matrix / nextNumber,
+                            _   => matrix + nextNumber
                         };
                     }
                 }
-                Answer.Content = $"{matrix.Print()}";
+                Answer.Content = $"Ответ:\n{matrix.Print()}";
             }
             catch (Exception exception) {
                 MessageBox.Show($"{exception}");
             }
+        }
+        
+        private void SendToBrowser(object sender, RequestNavigateEventArgs e) {
+            try {
+                Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri){ UseShellExecute=true});
+                e.Handled = true;
+            }
+            catch (Exception exception) {
+                MessageBox.Show($"{exception}");
+            }
+        }
+
+        private void CopyToClipBoard(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(Answer.Content + "\n");
         }
     }
 }

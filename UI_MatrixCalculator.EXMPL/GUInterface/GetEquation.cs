@@ -51,8 +51,26 @@ namespace UI_MatrixCalculator.EXMPL.GUInterface {
                     Width  = 100
                 });
                 
+                tempGrid.Children.Add(new CheckBox() {
+                    Content = "^",
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    FontSize = 10,
+                    Name     = $"CheckBox_{i}",
+                    Margin   = new Thickness(secondIndent + mainIndent * i, -125, 0, 230),
+                    Height   = 40,
+                    Width    = 40
+                });
+                
+                tempGrid.Children.Add(new TextBox() {
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    FontSize = 10,
+                    Name     = $"Degree_{i}",
+                    Margin   = new Thickness(40 + secondIndent + mainIndent * i, -145, 0, 230),
+                    Height   = 20,
+                    Width    = 40
+                });
+                
                 tempGrid.Children.Add(new Label() {
-
                     HorizontalAlignment = HorizontalAlignment.Left,
                     FontSize = 15,
                     Name     = $"Label_{i}",

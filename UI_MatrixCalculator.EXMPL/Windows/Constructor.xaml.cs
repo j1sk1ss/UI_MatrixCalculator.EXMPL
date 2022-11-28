@@ -91,25 +91,33 @@ namespace UI_MatrixCalculator.EXMPL.Windows {
             }
         }
         private void SaveMatrix(object sender, EventArgs e) {
-            var temp     = new double[_xSize, _ySize];
-            var count    = new int();
-            for (var i = _xSize - 1; i >= 0; i--) {
-                for (var j = _ySize - 1; j >= 0; j--) {
-                    count++;
-                    temp[i, j] = double.Parse((MatrixParent.Children[^(count + 1)] as TextBox)!.Text);
-                }
-            }
-
-            var matrix = new Matrix(temp);
-            foreach (var element in (MainWindow.ParentGrid.Children[^1] as Grid)!.Children) {
-                if (element.GetType() != typeof(Label)) continue;
-                var label = element as Label;
-                if (label!.Name == $"Label_{_position}") {
-                    label!.Content = matrix.Print();
-                }
-            }
+            try
+            {
+                var temp     = new double[_xSize, _ySize];
+                var count    = 0;
             
-            MainWindow.Matrix.Add(matrix);
+                for (var i = _xSize - 1; i >= 0; i--) {
+                    for (var j = _ySize - 1; j >= 0; j--) {
+                        temp[i, j] = double.Parse((MatrixParent.Children[^++count] as TextBox)!.Text);
+                    }
+                }
+
+                var matrix = new Matrix(temp);
+                foreach (var element in (MainWindow.ParentGrid.Children[^1] as Grid)!.Children) {
+                    if (element.GetType() != typeof(Label)) continue;
+                    var label = element as Label;
+                    if (label!.Name == $"Label_{_position}") {
+                        label!.Content = matrix.Print();
+                    }
+                }
+            
+                MainWindow.Matrix.Add(matrix);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show($"{exception}");
+                throw;
+            }
         }
     }
 }
