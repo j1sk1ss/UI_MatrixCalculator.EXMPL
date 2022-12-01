@@ -11,20 +11,21 @@ using Matrix = UI_MatrixCalculator.EXMPL.Objects.Matrix;
 namespace UI_MatrixCalculator.EXMPL {
     public partial class MainWindow {
         public MainWindow() {
-            Matrix = new List<Matrix>();
-            _number = new List<int>();
+            Matrix  = new List<Matrix>();
+            _number = new List<double>();
             InitializeComponent();
         }
 
         public readonly List<Matrix> Matrix;
-        private List<int> _number;
+        private List<double> _number;
         public void CreateMatrix(object sender, RoutedEventArgs e) {
             new Constructor(this, int.Parse((sender as Button)!.Name.Split("_")[2])).Show();
         }
         public void ChosenType(object sender, SelectionChangedEventArgs selectionChangedEventArgs) {
-            var comboBox = sender as ComboBox; 
-            Button button    = null;
-            TextBox text     = null;
+            
+            var comboBox  = sender as ComboBox; 
+            Button button = null;
+            TextBox text  = null;
 
             var equationGrid = ParentGrid.Children[^1] as Grid;
             
@@ -50,6 +51,10 @@ namespace UI_MatrixCalculator.EXMPL {
                     button!.Visibility = Visibility.Visible;
                     text!.Visibility   = Visibility.Hidden;
                     break;
+                default:
+                    button!.Visibility = Visibility.Visible;
+                    text!.Visibility   = Visibility.Hidden;
+                    break;
             }
         }
 
@@ -59,11 +64,11 @@ namespace UI_MatrixCalculator.EXMPL {
             Matrix.Clear();
             _number.Clear();
             
-            for (var i = 0; i < _size; i++) {
-                Matrix.Add(new Matrix(new double[1,1]));
-            }
-            
             ParentGrid.Children.Add(GetEquation.GetEquationPart(++_size, this));
+            
+            for (var i = 0; i < _size; i++) {
+                Matrix.Add(new Matrix(null));
+            }
         }
         public void DeletePart(object sender, RoutedEventArgs e) {
             ParentGrid.Children.Clear();
@@ -75,9 +80,18 @@ namespace UI_MatrixCalculator.EXMPL {
         private void ResolveEquation(object sender, RoutedEventArgs e) {
             try {
                 var tempGrid = ParentGrid.Children[^1] as Grid;
-                _number      = ReturnEquation.NumsFromGrid(tempGrid) ?? new List<int>();
+                _number      = ReturnEquation.NumsFromGrid(tempGrid) ?? new List<double>();
                 
-                var matrix = Matrix[0];
+                var matrix = new Matrix((double[,])Matrix[0].Body.Clone()) * 
+                             (tempGrid!.Children[0] as ComboBox)!.Text switch {
+                                "+" => 1,
+                                "-" => -1,
+                                _   => 1
+                            };
+
+                if ((tempGrid!.Children[4] as CheckBox)!.IsChecked == true) {
+                    matrix = matrix.Pow(int.Parse((tempGrid!.Children[5] as TextBox)!.Text));
+                }
 
                 var numPos    = 0;
                 var matrixPos = 0;
@@ -89,7 +103,9 @@ namespace UI_MatrixCalculator.EXMPL {
                     if (tempGrid!.Children[i + 2].GetType() != typeof(Button)) continue;
 
                     if ((tempGrid!.Children[i + 2] as Button)!.Visibility == Visibility.Visible) {
-                        var nextMatrix = Matrix[++matrixPos];
+                        var nextMatrix = new Matrix((double[,])Matrix[++matrixPos].Body.Clone());
+                        if (nextMatrix.Body == null) continue;
+                        
                         if ((tempGrid!.Children[i + 4] as CheckBox)!.IsChecked == true) {
                             nextMatrix = nextMatrix.Pow(int.Parse((tempGrid!.Children[i + 5] as TextBox)!.Text));
                         }
@@ -102,7 +118,7 @@ namespace UI_MatrixCalculator.EXMPL {
                         };
                     }
                     else {
-                        double nextNumber = _number[numPos++];
+                        var nextNumber = _number[numPos++];
                         if ((tempGrid!.Children[i + 4] as CheckBox)!.IsChecked == true) {
                             nextNumber = Math.Pow(nextNumber, int.Parse((tempGrid!.Children[i + 5] as TextBox)!.Text));
                         }
@@ -115,6 +131,7 @@ namespace UI_MatrixCalculator.EXMPL {
                             _   => matrix + nextNumber
                         };
                     }
+                    MessageBox.Show($"{matrix.Print()}");
                 }
                 Answer.Content = $"Ответ:\n{matrix.Print()}";
             }
@@ -122,7 +139,6 @@ namespace UI_MatrixCalculator.EXMPL {
                 MessageBox.Show($"{exception}");
             }
         }
-        
         private void SendToBrowser(object sender, RequestNavigateEventArgs e) {
             try {
                 Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri){ UseShellExecute=true});

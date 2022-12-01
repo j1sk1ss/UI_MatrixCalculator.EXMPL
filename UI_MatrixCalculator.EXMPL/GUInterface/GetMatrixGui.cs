@@ -9,7 +9,7 @@ namespace UI_MatrixCalculator.EXMPL.GUInterface
         public static Grid GetMatrix(int xSize, int ySize, Constructor constructor)
         {
             var tempGrid = new Grid();
-            var button = new Button() {
+            var button = new Button {
                 Height = 20,
                 Width  = 20,
                 HorizontalAlignment = HorizontalAlignment.Left,
@@ -20,7 +20,7 @@ namespace UI_MatrixCalculator.EXMPL.GUInterface
             button.Click += constructor.IncreaseYSize;
             tempGrid.Children.Add(button);
             
-            button = new Button() {
+            button = new Button {
                 Height = 20,
                 Width  = 20,
                 HorizontalAlignment = HorizontalAlignment.Left,
@@ -31,7 +31,7 @@ namespace UI_MatrixCalculator.EXMPL.GUInterface
             button.Click += constructor.DecreaseYSize;
             tempGrid.Children.Add(button);
             
-            button = new Button() {
+            button = new Button {
                 Height = 20,
                 Width  = 20,
                 HorizontalAlignment = HorizontalAlignment.Left,
@@ -42,7 +42,7 @@ namespace UI_MatrixCalculator.EXMPL.GUInterface
             button.Click += constructor.IncreaseXSize;
             tempGrid.Children.Add(button);
             
-            button = new Button() {
+            button = new Button {
                 Height = 20,
                 Width  = 20,
                 HorizontalAlignment = HorizontalAlignment.Left,

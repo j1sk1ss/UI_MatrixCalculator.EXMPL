@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 
 namespace UI_MatrixCalculator.EXMPL.Objects {
     public class Matrix {
@@ -7,7 +6,7 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
             Body = body;
         }
 
-        private double[,] Body { get; set; } // Тело
+        public double[,] Body { get; set; } // Тело
         
         public double GetElement(int x, int y) => Body[x, y]; // Метод получения элемента по координатам
         
@@ -57,7 +56,7 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
         }
 
         public Matrix Pow(int degree) {
-            var endMatrix = new Matrix(Body);
+            var endMatrix = new Matrix((double[,])Body.Clone());
             for (var count = 0; count < degree - 1; count++) {
                 endMatrix *= this;
             }
@@ -71,7 +70,7 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
                 return new Matrix(new double[1,1]);
             }
             
-            var endMatrix = new Matrix(firstMatrix.Body);
+            var endMatrix = new Matrix((double[,])firstMatrix.Body.Clone());
             for (var i = 0; i < firstMatrix.GetRow(0).Size(); i++) {
                 for (var j = 0; j < firstMatrix.GetColumn(0).Size(); j++) {
                     endMatrix.Body[i, j] = firstMatrix.Body[i, j] + secondMatrix.Body[i, j];
@@ -82,7 +81,7 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
         }
         
         public static Matrix operator +(Matrix firstMatrix, double number) {
-            var endMatrix = new Matrix(firstMatrix.Body);
+            var endMatrix = new Matrix((double[,])firstMatrix.Body.Clone());
             for (var i = 0; i < firstMatrix.GetRow(0).Size(); i++) {
                 for (var j = 0; j < firstMatrix.GetColumn(0).Size(); j++) {
                     endMatrix.Body[i, j] = firstMatrix.Body[i, j] + number;
@@ -99,7 +98,7 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
                 return new Matrix(new double[1,1]);
             }
 
-            var endMatrix = new Matrix(firstMatrix.Body);
+            var endMatrix = new Matrix((double[,])firstMatrix.Body.Clone());
             for (var i = 0; i < firstMatrix.GetRow(0).Size(); i++) {
                 for (var j = 0; j < firstMatrix.GetColumn(0).Size(); j++) {
                     endMatrix.Body[i, j] = firstMatrix.Body[i, j] - secondMatrix.Body[i, j];
@@ -110,7 +109,7 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
         }
         
         public static Matrix operator -(Matrix firstMatrix, double number) {
-            var endMatrix = new Matrix(firstMatrix.Body);
+            var endMatrix = new Matrix((double[,])firstMatrix.Body.Clone());
             for (var i = 0; i < firstMatrix.GetRow(0).Size(); i++) {
                 for (var j = 0; j < firstMatrix.GetColumn(0).Size(); j++) {
                     endMatrix.Body[i, j] = firstMatrix.Body[i, j] - number;
@@ -144,15 +143,10 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
         }
         
         public static Matrix operator *(Matrix firstMatrix, double number) {
-            var endMatrix = new Matrix(new double[firstMatrix.Body.GetLength(0),
-                firstMatrix.Body.GetLength(1)]);
-            
-            for (var i = 0; i < firstMatrix.GetRow(0).Size(); i++) {
-                for (var j = 0; j < firstMatrix.GetColumn(0).Size(); j++) {
-                    endMatrix.Body[i, j] = 0;
-                    for (var k = 0; k < firstMatrix.GetColumn(0).Size(); k++) {
-                        endMatrix.Body[i, j] += firstMatrix.Body[i, k] * number;
-                    }
+            var endMatrix = new Matrix((double[,])firstMatrix.Body.Clone());
+            for (var i = 0; i < firstMatrix.GetColumn(0).Size(); i++) {
+                for (var j = 0; j < firstMatrix.GetRow(0).Size(); j++) {
+                    endMatrix.Body[i, j] *= number;
                 }
             }
             
