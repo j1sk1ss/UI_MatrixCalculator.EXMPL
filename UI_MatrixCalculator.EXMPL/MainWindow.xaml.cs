@@ -71,11 +71,13 @@ namespace UI_MatrixCalculator.EXMPL {
             }
         }
         public void DeletePart(object sender, RoutedEventArgs e) {
+            if (_size == 0) return;
+            
             ParentGrid.Children.Clear();
             Matrix.Clear();
             _number.Clear();
-            
-            ParentGrid.Children.Add(GetEquation.GetEquationPart(--_size, this));
+
+            ParentGrid.Children.Add(GetEquation.GetEquationPart(_size, this));
         }
         private void ResolveEquation(object sender, RoutedEventArgs e) {
             try {
