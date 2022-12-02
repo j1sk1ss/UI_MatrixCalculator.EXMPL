@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace UI_MatrixCalculator.EXMPL.GUInterface {
     public static class GetEquation {
-        public static Grid GetEquationPart(int size, MainWindow mainWindow) { // Combobox -> Button -> TextBox -> Label -> ComboBox
+        public static Grid GetEquationPart(int size, MainWindow mainWindow) { 
             mainWindow.ParentGrid.Children.Clear();
             var tempGrid = new Grid();
             
@@ -18,7 +18,7 @@ namespace UI_MatrixCalculator.EXMPL.GUInterface {
                     Height = 30,
                     Width  = 40,
                     Margin = new Thickness(10 + mainIndent * i, 0, 0, 300),
-                    Items = { "+", "-", "*", "/" }
+                    Items  = { "+", "-", "*", "/" }
                 };
                 
                 tempGrid.Children.Add(cmb);
@@ -29,7 +29,7 @@ namespace UI_MatrixCalculator.EXMPL.GUInterface {
                     Height = 25,
                     Width  = 100,
                     Margin = new Thickness(secondIndent + mainIndent * i, 0, 0, 300),
-                    Items = { "матрица", "число" }
+                    Items  = { "матрица", "число" }
                 };
                 
                 tempCombobox.SelectionChanged += mainWindow.ChosenType;

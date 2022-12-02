@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.Win32;
 using UI_MatrixCalculator.EXMPL.GUInterface;
 using UI_MatrixCalculator.EXMPL.Objects;
 
@@ -22,7 +23,6 @@ namespace UI_MatrixCalculator.EXMPL.Windows {
         public void DecreaseXSize(object sender, RoutedEventArgs routedEventArgs) => SetInterfaceMatrix(--_xSize, _ySize);
         public void DecreaseYSize(object sender, RoutedEventArgs routedEventArgs) => SetInterfaceMatrix(_xSize, --_ySize);
         private void SetInterfaceMatrix(int x, int y) {
-            
             if (y < 2) {
                 _ySize = 2;
                 return;
@@ -30,6 +30,16 @@ namespace UI_MatrixCalculator.EXMPL.Windows {
 
             if (x < 2) {
                 _xSize = 2;
+                return;
+            }
+            
+            if (y > 5) {
+                _ySize = 5;
+                return;
+            }
+
+            if (x > 5) {
+                _xSize = 5;
                 return;
             }
             
@@ -58,6 +68,7 @@ namespace UI_MatrixCalculator.EXMPL.Windows {
                 
                 var parentGrid = MainWindow.ParentGrid.Children[^1] as Grid;     
                 var matrix = new Matrix(temp);
+                
                 foreach (var element in parentGrid!.Children) {
                     if (element.GetType() != typeof(Label)) continue;
                     var label = element as Label;
@@ -65,12 +76,11 @@ namespace UI_MatrixCalculator.EXMPL.Windows {
                         label!.Content = matrix.Print();
                     }
                 }
-            
+
                 MainWindow.Matrix[_position] = matrix;
             }
             catch (Exception exception) {
                 MessageBox.Show($"{exception}", "Ошибка с сохранением!");
-                throw;
             }
         }
     }

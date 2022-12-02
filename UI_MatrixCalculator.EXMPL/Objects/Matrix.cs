@@ -144,6 +144,7 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
         
         public static Matrix operator *(Matrix firstMatrix, double number) {
             var endMatrix = new Matrix((double[,])firstMatrix.Body.Clone());
+            
             for (var i = 0; i < firstMatrix.GetColumn(0).Size(); i++) {
                 for (var j = 0; j < firstMatrix.GetRow(0).Size(); j++) {
                     endMatrix.Body[i, j] *= number;
@@ -154,15 +155,11 @@ namespace UI_MatrixCalculator.EXMPL.Objects {
         }
         
         public static Matrix operator /(Matrix firstMatrix, double number) {
-            var endMatrix = new Matrix(new double[firstMatrix.Body.GetLength(0),
-                firstMatrix.Body.GetLength(1)]);
+            var endMatrix = new Matrix((double[,])firstMatrix.Body.Clone());
             
             for (var i = 0; i < firstMatrix.GetRow(0).Size(); i++) {
                 for (var j = 0; j < firstMatrix.GetColumn(0).Size(); j++) {
-                    endMatrix.Body[i, j] = 0;
-                    for (var k = 0; k < firstMatrix.GetColumn(0).Size(); k++) {
-                        endMatrix.Body[i, j] = firstMatrix.Body[i, k] / number;
-                    }
+                    endMatrix.Body[i, j] /= number;
                 }
             }
             

@@ -103,9 +103,10 @@ namespace UI_MatrixCalculator.EXMPL {
                     if (tempGrid!.Children[i + 2].GetType() != typeof(Button)) continue;
 
                     if ((tempGrid!.Children[i + 2] as Button)!.Visibility == Visibility.Visible) {
-                        var nextMatrix = new Matrix((double[,])Matrix[++matrixPos].Body.Clone());
-                        if (nextMatrix.Body == null) continue;
-                        
+                        var tempMatrix = Matrix[++matrixPos];
+                        if (tempMatrix.Body == null) continue;
+                        var nextMatrix = new Matrix((double[,])tempMatrix.Body.Clone());
+
                         if ((tempGrid!.Children[i + 4] as CheckBox)!.IsChecked == true) {
                             nextMatrix = nextMatrix.Pow(int.Parse((tempGrid!.Children[i + 5] as TextBox)!.Text));
                         }
@@ -131,7 +132,6 @@ namespace UI_MatrixCalculator.EXMPL {
                             _   => matrix + nextNumber
                         };
                     }
-                    MessageBox.Show($"{matrix.Print()}");
                 }
                 Answer.Content = $"Ответ:\n{matrix.Print()}";
             }
