@@ -74,14 +74,17 @@ namespace UI_MatrixCalculator.EXMPL.GUInterface {
                     Height   = 20,
                     Width    = 40
                 });
-                
-                tempGrid.Children.Add(new Label() {
-                    HorizontalAlignment = HorizontalAlignment.Left,
-                    FontSize = 15,
-                    Name     = $"Label_{i}",
-                    Margin   = new Thickness(secondIndent + mainIndent * i, 120, 0, 230),
+
+                tempGrid.Children.Add(new ScrollViewer {
+                    Margin   = new Thickness(secondIndent + mainIndent * i, 140, 0, 230),
                     Height   = 100,
-                    Width    = 100
+                    Width    = 100,
+                    HorizontalScrollBarVisibility = ScrollBarVisibility.Visible,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Content = new Label {
+                        FontSize = 15,
+                          Name     = $"Label_{i}"
+                    }
                 });
             }
             

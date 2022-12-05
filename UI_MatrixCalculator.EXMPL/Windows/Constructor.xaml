@@ -5,12 +5,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:UI_MatrixCalculator.EXMPL.Windows"
         mc:Ignorable="d"
-        Title="Constructor" Height="450" Width="800"
-        Closed="SaveMatrix">
+        Title="Constructor" Height="450" Width="800">
     <Grid>
         <ScrollViewer HorizontalScrollBarVisibility="Visible">
             <Grid x:Name="MatrixParent">
             </Grid>
         </ScrollViewer>
+        <Button Height="30"
+                Width="160"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="0,0,0,35"
+                Click="SaveMatrix">
+            Задать матрицу
+        </Button>
+        <Button Height="30"
+                Width="160"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Click="SetFromFile">
+            Загрузить с файла
+        </Button>
     </Grid>
 </Window>

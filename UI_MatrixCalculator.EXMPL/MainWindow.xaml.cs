@@ -72,15 +72,18 @@ namespace UI_MatrixCalculator.EXMPL {
         }
         public void DeletePart(object sender, RoutedEventArgs e) {
             if (_size == 0) return;
-            
+
             ParentGrid.Children.Clear();
             Matrix.Clear();
             _number.Clear();
 
-            ParentGrid.Children.Add(GetEquation.GetEquationPart(_size, this));
+            ParentGrid.Children.Add(GetEquation.GetEquationPart(--_size, this));
         }
+        private string _history;
         private void ResolveEquation(object sender, RoutedEventArgs e) {
             try {
+
+                
                 var tempGrid = ParentGrid.Children[^1] as Grid;
                 _number      = ReturnEquation.NumsFromGrid(tempGrid) ?? new List<double>();
                 
@@ -90,11 +93,15 @@ namespace UI_MatrixCalculator.EXMPL {
                                 "-" => -1,
                                 _   => 1
                             };
-
+                
+                _history += $"{matrix.Print()}";
+                
                 if ((tempGrid!.Children[4] as CheckBox)!.IsChecked == true) {
                     matrix = matrix.Pow(int.Parse((tempGrid!.Children[5] as TextBox)!.Text));
+                    _history += $"^{(tempGrid!.Children[5] as TextBox)!.Text}";
                 }
 
+                
                 var numPos    = 0;
                 var matrixPos = 0;
 
@@ -110,8 +117,10 @@ namespace UI_MatrixCalculator.EXMPL {
                         var nextMatrix = new Matrix((double[,])tempMatrix.Body.Clone());
 
                         if ((tempGrid!.Children[i + 4] as CheckBox)!.IsChecked == true) {
+                            _history += $"\n{(tempGrid!.Children[i] as ComboBox)!.Text}\n" +
+                                        $"^{(tempGrid!.Children[i + 5] as TextBox)!.Text}\n{nextMatrix.Print()}";                            
                             nextMatrix = nextMatrix.Pow(int.Parse((tempGrid!.Children[i + 5] as TextBox)!.Text));
-                        }
+                        } else _history += $"\n{(tempGrid!.Children[i] as ComboBox)!.Text}\n{nextMatrix.Print()}";
                         
                         matrix = (tempGrid!.Children[i] as ComboBox)!.Text switch {
                             "+" => matrix + nextMatrix,
@@ -123,9 +132,11 @@ namespace UI_MatrixCalculator.EXMPL {
                     else {
                         var nextNumber = _number[numPos++];
                         if ((tempGrid!.Children[i + 4] as CheckBox)!.IsChecked == true) {
+                            _history += $"{(tempGrid!.Children[i] as ComboBox)!.Text}\n" +
+                                        $"^{(tempGrid!.Children[i + 5] as TextBox)!.Text}\n{nextNumber}";
                             nextNumber = Math.Pow(nextNumber, int.Parse((tempGrid!.Children[i + 5] as TextBox)!.Text));
-                        }
-                        
+                        } else _history += $"\n{(tempGrid!.Children[i] as ComboBox)!.Text}\n{nextNumber}";
+
                         matrix = (tempGrid!.Children[i] as ComboBox)!.Text switch {
                             "+" => matrix + nextNumber,
                             "-" => matrix - nextNumber,
@@ -135,6 +146,7 @@ namespace UI_MatrixCalculator.EXMPL {
                         };
                     }
                 }
+                _history += $"=\n{matrix.Print()}";
                 Answer.Content = $"Ответ:\n{matrix.Print()}";
             }
             catch (Exception exception) {
@@ -151,5 +163,7 @@ namespace UI_MatrixCalculator.EXMPL {
             }
         }
         private void CopyToClipBoard(object sender, RoutedEventArgs e) => Clipboard.SetText(Answer.Content + "\n");
+
+        private void ShowHistory(object sender, RoutedEventArgs e) => new History(_history).Show();
     }
 }

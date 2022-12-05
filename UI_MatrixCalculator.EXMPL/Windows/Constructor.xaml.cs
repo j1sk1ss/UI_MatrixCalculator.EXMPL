@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
@@ -65,23 +66,48 @@ namespace UI_MatrixCalculator.EXMPL.Windows {
                         }
                     }
                 }
-                
-                var parentGrid = MainWindow.ParentGrid.Children[^1] as Grid;     
-                var matrix = new Matrix(temp);
-                
-                foreach (var element in parentGrid!.Children) {
-                    if (element.GetType() != typeof(Label)) continue;
-                    var label = element as Label;
-                    if (label!.Name == $"Label_{_position}") {
-                        label!.Content = matrix.Print();
-                    }
-                }
-
-                MainWindow.Matrix[_position] = matrix;
+                AddToLabel(temp);
             }
             catch (Exception exception) {
                 MessageBox.Show($"{exception}", "Ошибка с сохранением!");
             }
+        }
+        private void AddToLabel(double[,] temp) {
+            var parentGrid = MainWindow.ParentGrid.Children[^1] as Grid;     
+            var matrix = new Matrix(temp);
+                
+            foreach (var element in parentGrid!.Children) {
+                if (element.GetType() != typeof(ScrollViewer)) continue;
+                var label = (element as ScrollViewer)!.Content as Label;
+                if (label!.Name == $"Label_{_position}") {
+                    label!.Content = matrix.Print();
+                }
+            }
+            
+            MainWindow.Matrix[_position] = matrix;
+            Close();
+        }
+        private void SetFromFile(object sender, RoutedEventArgs e) {
+            var matrixFromFile = new OpenFileDialog();
+            var filePath = "";
+            if (matrixFromFile.ShowDialog() == true) filePath = matrixFromFile.FileName;
+            
+            if (!File.Exists(filePath)) return;
+
+            using var streamReader = new StreamReader(filePath);
+            var text = streamReader.ReadToEnd();
+
+            var lines = text.Split("\n");
+
+            var tempMatrix = new double[lines.Length, lines[0].Split(" ").Length];
+
+            for (var i = 0; i < lines.Length; i++) {
+                var symbols = lines[i].Split(" ");
+                for (var j = 0; j < symbols.Length; j++)
+                    if (int.TryParse(symbols[j], out var k)) tempMatrix[i, j] = k;
+            }
+
+            AddToLabel(tempMatrix);
         }
     }
 }
