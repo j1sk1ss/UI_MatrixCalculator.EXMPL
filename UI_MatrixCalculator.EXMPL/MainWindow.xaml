@@ -76,6 +76,9 @@
         <Button Click="CopyToClipBoard" Height="20" Width="120" Margin="0,400,650,0">
             Скопировать ответ
         </Button>
+        <Button Click="DownloadAnswer" Height="20" Width="120" Margin="0,300,650,0">
+            Скачать ответ
+        </Button>
         <Button Click="ShowHistory" Height="20" Width="120" Margin="0,350,650,0">
             История
         </Button>

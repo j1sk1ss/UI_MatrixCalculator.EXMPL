@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using Microsoft.Win32;
 using UI_MatrixCalculator.EXMPL.GUInterface;
 using UI_MatrixCalculator.EXMPL.Windows;
 using Matrix = UI_MatrixCalculator.EXMPL.Objects.Matrix;
@@ -165,5 +167,11 @@ namespace UI_MatrixCalculator.EXMPL {
         private void CopyToClipBoard(object sender, RoutedEventArgs e) => Clipboard.SetText(Answer.Content + "\n");
 
         private void ShowHistory(object sender, RoutedEventArgs e) => new History(_history).Show();
+
+        private void DownloadAnswer(object sender, RoutedEventArgs e) {
+            var open = new SaveFileDialog();
+            if (open.ShowDialog() != true) return;
+            File.WriteAllText(open.FileName + ".txt", Answer.Content + "\n");
+        }
     }
 }
