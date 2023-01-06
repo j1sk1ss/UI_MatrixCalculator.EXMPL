@@ -6,7 +6,7 @@
         mc:Ignorable="d"
         MinHeight="470"
         MinWidth="800"
-        Title="MainWindow" 
+        Title="Решатель" 
         Height="470" 
         Width="800">
     <Grid>
@@ -19,12 +19,12 @@
                     
                 </Grid>
             </ScrollViewer>
-            <Label Margin="0,0,0,150" 
+            <Label Margin="0,0,50,150" 
                    Height="30"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Bottom"> Информация: </Label>
             <Label x:Name="Answer" FontSize="20" Height="200" Margin="0,200,0,0"> </Label>
-            <Label Margin="0,0,0,130" 
+            <Label Margin="0,0,50,130" 
                    Height="30"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Bottom"> 
@@ -33,7 +33,7 @@
                     Как умножить матрицу на матрицу?
                 </Hyperlink>
             </Label>
-            <Label Margin="0,0,0,110" 
+            <Label Margin="0,0,50,110" 
                    Height="30"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Bottom"> 
@@ -42,7 +42,7 @@
                     Как умножить матрицу на число?
                 </Hyperlink>
             </Label>
-            <Label Margin="0,0,0,90" 
+            <Label Margin="0,0,50,90" 
                    Height="30"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Bottom"> 
@@ -51,7 +51,7 @@
                     Как сложить две матрицы?
                 </Hyperlink>
             </Label>
-            <Label Margin="0,0,0,70" 
+            <Label Margin="0,0,50,70" 
                    Height="30"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Bottom"> 
@@ -60,7 +60,7 @@
                     Как сложить матрицу и число?
                 </Hyperlink>
             </Label>
-            <Label Margin="0,0,0,50" 
+            <Label Margin="0,0,50,50" 
                    Height="30"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Bottom"> 
@@ -70,16 +70,16 @@
                 </Hyperlink>
             </Label>
         </Grid>
-        <Button Click="ResolveEquation" Height="20" Width="100" Margin="650,400,0,0">
+        <Button Click="ResolveEquation" Height="20" Width="100" Margin="600,400,0,0">
             Решить
         </Button>
-        <Button Click="CopyToClipBoard" Height="20" Width="120" Margin="0,400,650,0">
+        <Button Click="CopyToClipBoard" Height="20" Width="120" Margin="0,400,600,0">
             Скопировать ответ
         </Button>
-        <Button Click="DownloadAnswer" Height="20" Width="120" Margin="0,300,650,0">
+        <Button Click="DownloadAnswer" Height="20" Width="120" Margin="0,300,600,0">
             Скачать ответ
         </Button>
-        <Button Click="ShowHistory" Height="20" Width="120" Margin="0,350,650,0">
+        <Button Click="ShowHistory" Height="20" Width="120" Margin="0,350,600,0">
             История
         </Button>
     </Grid>

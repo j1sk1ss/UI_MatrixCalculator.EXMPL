@@ -20,15 +20,15 @@ namespace UI_MatrixCalculator.EXMPL {
 
         public readonly List<Matrix> Matrix;
         private List<double> _number;
-        public void CreateMatrix(object sender, RoutedEventArgs e) {
+        
+        public void CreateMatrix(object sender, RoutedEventArgs e) =>
             new Constructor(this, int.Parse((sender as Button)!.Name.Split("_")[2])).Show();
-        }
+        
         public void ChosenType(object sender, SelectionChangedEventArgs selectionChangedEventArgs) {
-            
             var comboBox  = sender as ComboBox; 
             Button button = null;
             TextBox text  = null;
-
+            
             var equationGrid = ParentGrid.Children[^1] as Grid;
             
             foreach (var elem in equationGrid!.Children) {
@@ -44,14 +44,24 @@ namespace UI_MatrixCalculator.EXMPL {
                 }
             }
 
-            switch (comboBox!.Text) {
+            foreach (var element in equationGrid!.Children) {
+                if (element.GetType() != typeof(ScrollViewer)) continue;
+                var label = (element as ScrollViewer)!.Content as Label;
+                if (label!.Name == $"Label_{int.Parse(comboBox!.Name.Split("_")[1])}") {
+                    label!.Content = "";
+                }
+            }
+            
+            switch (comboBox!.SelectedValue.ToString()) {
                 case "матрица":
-                    button!.Visibility = Visibility.Hidden;
-                    text!.Visibility   = Visibility.Visible;
-                    break;
-                case "число":
                     button!.Visibility = Visibility.Visible;
                     text!.Visibility   = Visibility.Hidden;
+                    break;
+                case "число":
+                    button!.Visibility = Visibility.Hidden;
+                    text!.Visibility   = Visibility.Visible;
+                    Matrix[int.Parse(comboBox!.Name.Split("_")[1])] = null;
+                    
                     break;
                 default:
                     button!.Visibility = Visibility.Visible;
@@ -72,6 +82,7 @@ namespace UI_MatrixCalculator.EXMPL {
                 Matrix.Add(new Matrix(null));
             }
         }
+        
         public void DeletePart(object sender, RoutedEventArgs e) {
             if (_size == 0) return;
 
@@ -82,27 +93,33 @@ namespace UI_MatrixCalculator.EXMPL {
             ParentGrid.Children.Add(GetEquation.GetEquationPart(--_size, this));
         }
         private string _history;
+        
         private void ResolveEquation(object sender, RoutedEventArgs e) {
             try {
-
-                
                 var tempGrid = ParentGrid.Children[^1] as Grid;
                 _number      = ReturnEquation.NumsFromGrid(tempGrid) ?? new List<double>();
                 
-                var matrix = new Matrix((double[,])Matrix[0].Body.Clone()) * 
-                             (tempGrid!.Children[0] as ComboBox)!.Text switch {
-                                "+" => 1,
-                                "-" => -1,
-                                _   => 1
-                            };
+                var matrix = new Matrix(new double[0,0]);
+                if (Matrix[0].Body != null) {
+                   matrix = new Matrix((double[,])Matrix[0].Body.Clone()) * 
+                                                (tempGrid!.Children[0] as ComboBox)!.Text switch {
+                                                   "+" => 1,
+                                                   "-" => -1,
+                                                   _   => 1
+                                               }; 
+                }
                 
                 _history += $"{matrix.Print()}";
                 
                 if ((tempGrid!.Children[4] as CheckBox)!.IsChecked == true) {
-                    matrix = matrix.Pow(int.Parse((tempGrid!.Children[5] as TextBox)!.Text));
-                    _history += $"^{(tempGrid!.Children[5] as TextBox)!.Text}";
+                    if (Matrix[0].Body != null) {
+                        matrix = matrix.Pow(int.Parse((tempGrid!.Children[5] as TextBox)!.Text));
+                    }
+                    else {
+                        _number[0] = Math.Pow(_number[0], int.Parse((tempGrid!.Children[5] as TextBox)!.Text));
+                    }
+                    _history += $"^{(tempGrid!.Children[5] as TextBox)!.Text}";      
                 }
-
                 
                 var numPos    = 0;
                 var matrixPos = 0;
@@ -148,13 +165,14 @@ namespace UI_MatrixCalculator.EXMPL {
                         };
                     }
                 }
-                _history += $"=\n{matrix.Print()}";
+                _history += $"=\n{matrix.Print()}\n\n\n";
                 Answer.Content = $"Ответ:\n{matrix.Print()}";
             }
             catch (Exception exception) {
                 MessageBox.Show($"{exception}");
             }
         }
+        
         private void SendToBrowser(object sender, RequestNavigateEventArgs e) {
             try {
                 Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri){ UseShellExecute=true});
@@ -164,6 +182,7 @@ namespace UI_MatrixCalculator.EXMPL {
                 MessageBox.Show($"{exception}");
             }
         }
+        
         private void CopyToClipBoard(object sender, RoutedEventArgs e) => Clipboard.SetText(Answer.Content + "\n");
 
         private void ShowHistory(object sender, RoutedEventArgs e) => new History(_history).Show();
